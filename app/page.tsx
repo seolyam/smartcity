@@ -17,15 +17,13 @@ gsap.registerPlugin(ScrollTrigger)
 export default function Home() {
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Global scroll animations can be added here if needed
       gsap.set("body", { overflow: "visible" })
     })
-
     return () => ctx.revert()
   }, [])
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-hidden relative">
+    <div className="min-h-screen bg-black text-white overflow-visible relative">
       <BackgroundElements />
       <Navigation />
       <Hero />
