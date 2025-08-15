@@ -9,6 +9,10 @@ const poppins = Poppins({
   variable: "--font-poppins",
 })
 
+const appleGaramond = {
+  variable: "--font-apple-garamond",
+}
+
 export const metadata: Metadata = {
   title: "MegaWorld Smart City - Future-Ready Urban Development",
   description:
@@ -22,7 +26,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${poppins.variable} font-sans antialiased`}>{children}</body>
+      <body className={`${poppins.variable} ${appleGaramond.variable} font-sans antialiased`}>{children}</body>
     </html>
   )
 }
