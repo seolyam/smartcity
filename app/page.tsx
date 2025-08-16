@@ -25,13 +25,14 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-black text-white overflow-visible relative">
       <Navigation />
+
       <Hero />
       <Features />
       <About />
       <Services />
       <Community />
-      <Footer />
       <BackgroundElements />
+      <Footer />
     </div>
   );
 }
