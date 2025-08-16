@@ -30,7 +30,6 @@ export const useScrollAnimation = (targets: ScrollAnimationTarget[]) => {
       },
       {
         scrollTrigger: {
-          markers: process.env.NODE_ENV === "production",
           start: start || "top bottom",
           trigger: trigger as string,
           toggleActions: "restart none none reset",
