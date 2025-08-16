@@ -6,6 +6,11 @@ import { gsap } from "gsap";
 export default function BackgroundElements() {
   const gridRef = useRef<HTMLDivElement>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -29,12 +34,14 @@ export default function BackgroundElements() {
   }, []);
 
   useEffect(() => {
-    gsap.to(".flashlight", {
-      background: `radial-gradient(circle at ${mousePos.x}px ${mousePos.y}px, rgba(255,255,255,0.15) 0%, transparent 200px)`,
-      duration: 0.4,
-      ease: "power2.out",
-    });
-  }, [mousePos]);
+    if (mounted) {
+      gsap.to(".flashlight", {
+        background: `radial-gradient(circle at ${mousePos.x}px ${mousePos.y}px, rgba(255,255,255,0.15) 0%, transparent 200px)`,
+        duration: 0.4,
+        ease: "power2.out",
+      });
+    }
+  }, [mousePos, mounted]);
 
   return (
     <div
@@ -57,7 +64,7 @@ export default function BackgroundElements() {
       <div className="absolute top-0 left-0 right-0 h-[40vh] bg-gradient-to-b from-black/30 to-transparent" />
 
       <div className="absolute top-0 left-0 w-[50vw] h-[50vh] bg-gradient-radial from-transparent via-transparent to-black/40 rounded-full blur-3xl" />
-      <div className="absolute top-0 right-0 w-[50vw] h-[50vw] bg-gradient-radial from-transparent via-transparent to-black/40 rounded-full blur-3xl" />
+      <div className="absolute top-0 right-0 w-[50vw] h-[50vh] bg-gradient-radial from-transparent via-transparent to-black/40 rounded-full blur-3xl" />
       <div className="absolute bottom-0 left-0 w-[50vw] h-[50vh] bg-gradient-radial from-transparent via-transparent to-black/40 rounded-full blur-3xl" />
       <div className="absolute bottom-0 right-0 w-[50vw] h-[50vh] bg-gradient-radial from-transparent via-transparent to-black/40 rounded-full blur-3xl" />
 
@@ -72,10 +79,12 @@ export default function BackgroundElements() {
         }}
       />
 
-      <div
-        className="absolute inset-0 flashlight"
-        style={{ mixBlendMode: "screen" }}
-      />
+      {mounted && (
+        <div
+          className="absolute inset-0 flashlight"
+          style={{ mixBlendMode: "screen" }}
+        />
+      )}
     </div>
   );
 }
