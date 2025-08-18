@@ -69,12 +69,10 @@
   }
 }
 
-/* Added Apple Garamond font classes for titles and headers */
 .font-garamond {
   font-family: var(--font-apple-garamond);
 }
 
-/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -92,17 +90,14 @@
   background: #4b5563;
 }
 
-/* Smooth scrolling */
 html {
   scroll-behavior: smooth;
 }
 
-/* Custom gradient utilities */
 .bg-gradient-radial {
   background: radial-gradient(circle, var(--tw-gradient-stops));
 }
 
-/* Enhanced transitions */
 * {
   transition-property: color, background-color, border-color,
     text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter,
@@ -111,7 +106,6 @@ html {
   transition-duration: 150ms;
 }
 
-/* Added scroll animation classes for text elements */
 .scroll-animate {
   opacity: 0;
   transform: translateY(30px);
