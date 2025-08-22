@@ -3,14 +3,16 @@
 import { useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Hero from "./hero/page";
-import About from "./about/page";
-import Services from "./services/page";
-import Community from "./community/page";
-import Features from "./features/page";
+import dynamic from "next/dynamic";
 import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
 import BackgroundElements from "./components/BackgroundElements";
+
+const Hero = dynamic(() => import("./hero/page"));
+const About = dynamic(() => import("./about/page"));
+const Services = dynamic(() => import("./services/page"));
+const Community = dynamic(() => import("./community/page"));
+const Features = dynamic(() => import("./features/page"));
 
 gsap.registerPlugin(ScrollTrigger);
 
