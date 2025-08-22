@@ -8,6 +8,8 @@ const poppins = Poppins({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   variable: "--font-poppins",
+  display: "swap",
+  preload: true,
 });
 
 const appleGaramond = {
@@ -18,6 +20,10 @@ export const metadata: Metadata = {
   title: "MegaWorld Smart City - Future-Ready Urban Development",
   description:
     "A living city that evolves with its people and the world around it. Creating a dynamic ecosystem driven by intelligent systems, green infrastructure, and forward-thinking solutions.",
+  keywords:
+    "smart city, urban development, sustainable design, intelligent systems",
+  viewport: "width=device-width, initial-scale=1",
+  robots: "index, follow",
 };
 
 export default function RootLayout({
