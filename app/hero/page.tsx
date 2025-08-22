@@ -4,31 +4,34 @@ import { Button } from "@/components/ui/button";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import BackgroundElements from "@/app/components/BackgroundElements";
 import Image from "next/image";
+import { useMemo } from "react";
 
 export default function Hero() {
-  const animationTargets = [
-    {
-      trigger: "#hero-subtitle",
-      target: "#hero-subtitle",
-      start: "top 90%",
-    },
-    {
-      trigger: "#hero-title",
-      target: "#hero-title",
-      start: "top 85%",
-    },
-    {
-      trigger: "#hero-desc",
-      target: "#hero-desc",
-      start: "top 80%",
-    },
-    {
-      trigger: "#hero-buttons",
-      target: "#hero-buttons",
-      start: "top 75%",
-    },
-  ];
-
+  const animationTargets = useMemo(
+    () => [
+      {
+        trigger: "#hero-subtitle",
+        target: "#hero-subtitle",
+        start: "top 90%",
+      },
+      {
+        trigger: "#hero-title",
+        target: "#hero-title",
+        start: "top 85%",
+      },
+      {
+        trigger: "#hero-desc",
+        target: "#hero-desc",
+        start: "top 80%",
+      },
+      {
+        trigger: "#hero-buttons",
+        target: "#hero-buttons",
+        start: "top 75%",
+      },
+    ],
+    []
+  );
   const comp = useScrollAnimation(animationTargets);
 
   return (
@@ -49,6 +52,10 @@ export default function Hero() {
                 height={615}
                 className="mx-auto"
                 priority
+                sizes="(max-width: 768px) 300px, 615px"
+                quality={85}
+                placeholder="blur"
+                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
               />
             </div>
           </div>
@@ -77,7 +84,7 @@ export default function Hero() {
             infrastructure, and forward-thinking solutions.
           </p>
 
-          <div id="hero-desc" className="flex gap-4 justify-center">
+          <div id="hero-buttons" className="flex gap-4 justify-center">
             <Button className="bg-blue-600 hover:bg-blue-700 px-8 py-3 text-lg font-poppins font-medium rounded-lg transition-all duration-300 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40">
               Explore
             </Button>
