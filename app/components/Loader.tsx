@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { gsap } from "gsap";
 import Image from "next/image";
 
@@ -11,76 +11,78 @@ interface LoaderProps {
 export const Loader = ({ onComplete }: LoaderProps) => {
   const [isLoading, setIsLoading] = useState(true);
 
+  const handleComplete = useCallback(() => {
+    setIsLoading(false);
+    document.body.style.overflow = "visible";
+    onComplete?.();
+  }, [onComplete]);
+
   useEffect(() => {
     window.scrollTo(0, 0);
     document.body.style.overflow = "hidden";
 
     const tl = gsap.timeline({
-      delay: 0.5,
-      ease: "power3.inOut",
+      delay: 0.3,
+      ease: "power2.out",
     });
 
     tl.to(".text-load p", {
-      duration: 1.5,
+      duration: 1.2,
       opacity: 1,
       y: 0,
-      stagger: 0.2,
+      stagger: 0.15,
     })
       .to(
         "#megaworld-logo",
         {
-          duration: 1,
+          duration: 0.8,
           opacity: 1,
           scale: 1,
         },
-        "-=0.8"
+        "-=0.6"
       )
       .to(
         "#megaworld-logo, .text-load p",
         {
-          duration: 0.8,
+          duration: 0.6,
           opacity: 0,
           y: -20,
         },
-        "+=0.5"
+        "+=0.3"
       )
       .to(
         ".loader-color.bg-black",
         {
-          duration: 0.4,
-          clipPath: "polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)",
-          ease: "power2.easeInOut",
-        },
-        "-=0.3"
-      )
-      .to(
-        ".loader-color.bg-blue-900",
-        {
-          duration: 0.4,
+          duration: 0.3,
           clipPath: "polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)",
           ease: "power2.easeInOut",
         },
         "-=0.2"
       )
       .to(
+        ".loader-color.bg-blue-900",
+        {
+          duration: 0.3,
+          clipPath: "polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)",
+          ease: "power2.easeInOut",
+        },
+        "-=0.15"
+      )
+      .to(
         ".loader-color.bg-cyan-900",
         {
-          duration: 0.4,
+          duration: 0.3,
           clipPath: "polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)",
           ease: "power2.easeInOut",
         },
         "-=0.1"
       )
       .to("#loader-bg", {
-        duration: 0.6,
+        duration: 0.4,
         opacity: 0,
-        onComplete: () => {
-          setIsLoading(false);
-          document.body.style.overflow = "visible";
-          onComplete?.();
-        },
+        onComplete: handleComplete,
       });
-  }, [onComplete]);
+  }, [handleComplete]);
 
   const divColors = ["bg-cyan-900", "bg-blue-900", "bg-black"];
 
@@ -91,6 +93,15 @@ export const Loader = ({ onComplete }: LoaderProps) => {
         className="fixed top-0 left-0 z-50 grid h-screen w-screen place-items-center bg-black"
       >
         <div className="text-center">
+          <Image
+            priority
+            src="/images/3d.png"
+            alt="MegaWorld 3D Logo"
+            height={120}
+            width={120}
+            className="z-10 mx-auto mb-8 opacity-0 scale-75"
+            id="megaworld-logo"
+          />
           <div className="text-load z-10 flex gap-6 font-garamond text-2xl text-white justify-center [&>p]:opacity-0 [&>p]:translate-y-4">
             <p>Smart</p>
             <p>City</p>
@@ -101,7 +112,7 @@ export const Loader = ({ onComplete }: LoaderProps) => {
       {divColors.map((color, index) => (
         <div
           key={color}
-          className={`${color} loader-color fixed top-0 left-0 z-[49] h-screen w-screen`}
+          className={`${color} loader-color fixed top-0 left-0 z-[49] h-screen w-screen will-change-transform`}
           style={{
             clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
           }}
