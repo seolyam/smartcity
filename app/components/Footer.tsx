@@ -11,7 +11,6 @@ export default function Footer() {
 
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-          {/* Title Section */}
           <div className="md:col-span-3">
             <h3 className="text-4xl md:text-5xl font-garamond font-light text-white leading-tight">
               MegaWorld
@@ -22,7 +21,6 @@ export default function Footer() {
             </h3>
           </div>
 
-          {/* Links Section */}
           <div className="md:col-span-2 md:col-start-6">
             <div className="space-y-3">
               <p className="text-gray-300 font-poppins font-light hover:text-white transition-colors cursor-pointer">
@@ -37,7 +35,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Contact Section */}
           <div className="md:col-span-2 md:col-start-6 md:row-start-2 mt-8 md:mt-0">
             <p className="text-gray-400 mb-3 font-poppins text-sm tracking-wider">
               CONTACT US
@@ -50,7 +47,6 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Social & Copyright */}
           <div className="md:col-span-4 md:col-start-9 md:row-start-2 flex flex-col justify-end items-end gap-4">
             <p className="text-gray-400 font-poppins font-light text-right">
               © 2025 — Copyright
