@@ -45,7 +45,6 @@ export default function Features() {
   return (
     <div ref={comp}>
       <section className="py-44 md:py-52 px-6 relative">
-        {/* background blur circles */}
         <div className="absolute top-10 right-10 w-36 h-36 bg-white/8 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-20 left-16 w-28 h-28 bg-white/10 rounded-full blur-2xl pointer-events-none" />
         <div className="absolute top-1/3 left-8 w-20 h-20 bg-white/12 rounded-full blur-xl pointer-events-none" />
@@ -74,7 +73,6 @@ export default function Features() {
                 key={index}
                 className="feature-card bg-white/5 backdrop-blur-sm border border-white/12 rounded-2xl p-8 hover:bg-white/10 transition-all duration-300"
               >
-                {/* All logos same size */}
                 <div className="w-28 h-28 mx-auto mb-6 relative">
                   <Image
                     src={item.img}
