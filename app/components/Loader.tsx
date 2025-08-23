@@ -93,15 +93,6 @@ export const Loader = ({ onComplete }: LoaderProps) => {
         className="fixed top-0 left-0 z-50 grid h-screen w-screen place-items-center bg-black"
       >
         <div className="text-center">
-          <Image
-            priority
-            src="/images/3d.png"
-            alt="MegaWorld 3D Logo"
-            height={120}
-            width={120}
-            className="z-10 mx-auto mb-8 opacity-0 scale-75"
-            id="megaworld-logo"
-          />
           <div className="text-load z-10 flex gap-6 font-garamond text-2xl text-white justify-center [&>p]:opacity-0 [&>p]:translate-y-4">
             <p>Smart</p>
             <p>City</p>
