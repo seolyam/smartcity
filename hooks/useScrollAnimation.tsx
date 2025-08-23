@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useMemo } from "react";
+import { useRef, useEffect, useMemo, useCallback } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -16,12 +16,12 @@ interface ScrollAnimationTarget {
 export const useScrollAnimation = (targets: ScrollAnimationTarget[]) => {
   const comp = useRef<HTMLDivElement>(null);
 
-  const scrollTrigText = useMemo(() => {
-    return (trigger: string, target: string, stag?: number, start?: string) => {
+  const scrollTrigText = useCallback(
+    (trigger: string, target: string, stag?: number, start?: string) => {
       gsap.fromTo(
         target,
         {
-          y: 250,
+          y: 150,
           opacity: 0,
         },
         {
@@ -31,27 +31,36 @@ export const useScrollAnimation = (targets: ScrollAnimationTarget[]) => {
             toggleActions: "restart none none reset",
             fastScrollEnd: true,
             preventOverlaps: true,
+            invalidateOnRefresh: false,
+            refreshPriority: -1,
           },
           opacity: 1,
           y: 0,
-          duration: 1.5,
+          duration: 1.2,
           stagger: stag,
-          ease: "power4.out",
+          ease: "power3.out",
+          force3D: true,
         }
       );
-    };
-  }, []);
+    },
+    []
+  );
 
-  const memoizedTargets = useMemo(() => targets, [JSON.stringify(targets)]);
+  const memoizedTargets = useMemo(() => targets, [targets]);
 
   useEffect(() => {
+    if (!comp.current) return;
+
     const ctx = gsap.context(() => {
       memoizedTargets.forEach(({ trigger, target, stagger, start }) => {
         scrollTrigText(trigger, target || trigger, stagger, start);
       });
     }, comp);
 
-    return () => ctx.revert();
+    return () => {
+      ctx.revert();
+      ScrollTrigger.refresh();
+    };
   }, [memoizedTargets, scrollTrigText]);
 
   return comp;
