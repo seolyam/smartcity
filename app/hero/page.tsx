@@ -4,9 +4,35 @@ import { Button } from "@/components/ui/button";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import BackgroundElements from "@/app/components/BackgroundElements";
 import Image from "next/image";
-import { useMemo } from "react";
+import { useMemo, useEffect, useState } from "react";
 
-export default function Hero() {
+interface HeroProps {
+  loaderComplete?: boolean;
+}
+
+export default function Hero({ loaderComplete = false }: HeroProps) {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [showSubtitle, setShowSubtitle] = useState(false);
+  const [showTitle, setShowTitle] = useState(false);
+  const [showDesc, setShowDesc] = useState(false);
+  const [showButtons, setShowButtons] = useState(false);
+
+  useEffect(() => {
+    if (!loaderComplete) return;
+
+    const timer = setTimeout(() => {
+      setIsLoaded(true);
+
+      // Staggered text reveal with delays
+      setTimeout(() => setShowSubtitle(true), 300);
+      setTimeout(() => setShowTitle(true), 600);
+      setTimeout(() => setShowDesc(true), 900);
+      setTimeout(() => setShowButtons(true), 1200);
+    }, 200); // Reduced delay since loader already handled the initial wait
+
+    return () => clearTimeout(timer);
+  }, [loaderComplete]); // Add loaderComplete as dependency
+
   const animationTargets = useMemo(
     () => [
       {
@@ -62,29 +88,53 @@ export default function Hero() {
         </div>
 
         <div className="text-center max-w-5xl mx-auto relative z-30 mt-20 md:mt-28">
-          <p
+          <div
             id="hero-subtitle"
-            className="text-gray-200 font-poppins font-medium text-base md:text-lg"
+            className={`text-gray-200 font-poppins font-medium text-base md:text-lg transition-all duration-1000 ease-out translate-y-6 ${
+              showSubtitle
+                ? "[clip-path:polygon(0%_0%,_100%_0%,_100%_100%,_0%_100%)] translate-y-0"
+                : "[clip-path:polygon(0%_100%,_100%_100%,_100%_100%,_0%_100%)]"
+            }`}
           >
-            MegaWorld: Innovation in Every Corner
-          </p>
+            <p>MegaWorld: Innovation in Every Corner</p>
+          </div>
 
-          <h1
+          <div
             id="hero-title"
-            className="text-[40px] md:text-[64px] leading-[1.1] font-garamond font-semibold mb-6 text-white"
+            className={`text-[40px] md:text-[64px] leading-[1.1] font-garamond font-semibold mb-6 text-white transition-all duration-1000 ease-out translate-y-8 ${
+              showTitle
+                ? "[clip-path:polygon(0%_0%,_100%_0%,_100%_100%,_0%_100%)] translate-y-0"
+                : "[clip-path:polygon(0%_100%,_100%_100%,_100%_100%,_0%_100%)]"
+            }`}
           >
-            A living city that evolves with its people and the world around it.
-          </h1>
+            <h1>
+              A living city that evolves with its people and the world around
+              it.
+            </h1>
+          </div>
 
-          <p
+          <div
             id="hero-desc"
-            className="text-lg md:text-xl text-gray-300 mb-10 max-w-[50%] mx-auto font-poppins font-light leading-relaxed"
+            className={`text-lg md:text-xl text-gray-300 mb-10 max-w-[50%] mx-auto font-poppins font-light leading-relaxed transition-all duration-1000 ease-out translate-y-6 ${
+              showDesc
+                ? "[clip-path:polygon(0%_0%,_100%_0%,_100%_100%,_0%_100%)] translate-y-0"
+                : "[clip-path:polygon(0%_100%,_100%_100%,_100%_100%,_0%_100%)]"
+            }`}
           >
-            Creating a dynamic ecosystem driven by intelligent systems, green
-            infrastructure, and forward-thinking solutions.
-          </p>
+            <p>
+              Creating a dynamic ecosystem driven by intelligent systems, green
+              infrastructure, and forward-thinking solutions.
+            </p>
+          </div>
 
-          <div id="hero-buttons" className="flex gap-4 justify-center">
+          <div
+            id="hero-buttons"
+            className={`flex gap-4 justify-center transition-all duration-1000 ease-out translate-y-4 ${
+              showButtons
+                ? "[clip-path:polygon(0%_0%,_100%_0%,_100%_100%,_0%_100%)] translate-y-0"
+                : "[clip-path:polygon(0%_100%,_100%_100%,_100%_100%,_0%_100%)]"
+            }`}
+          >
             <Button className="bg-blue-600 hover:bg-blue-700 px-8 py-3 text-lg font-poppins font-medium rounded-lg transition-all duration-300 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40">
               Explore
             </Button>
