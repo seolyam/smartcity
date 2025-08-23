@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import dynamic from "next/dynamic";
@@ -9,11 +9,21 @@ import Footer from "./components/Footer";
 import BackgroundElements from "./components/BackgroundElements";
 import { Loader } from "./components/Loader";
 
-const Hero = dynamic(() => import("./hero/page"));
-const About = dynamic(() => import("./about/page"));
-const Services = dynamic(() => import("./services/page"));
-const Community = dynamic(() => import("./community/page"));
-const Features = dynamic(() => import("./features/page"));
+const Hero = dynamic(() => import("./hero/page"), {
+  loading: () => <div className="min-h-screen" />,
+});
+const About = dynamic(() => import("./about/page"), {
+  loading: () => <div className="min-h-[50vh]" />,
+});
+const Services = dynamic(() => import("./services/page"), {
+  loading: () => <div className="min-h-[50vh]" />,
+});
+const Community = dynamic(() => import("./community/page"), {
+  loading: () => <div className="min-h-[50vh]" />,
+});
+const Features = dynamic(() => import("./features/page"), {
+  loading: () => <div className="min-h-[50vh]" />,
+});
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -27,14 +37,30 @@ export default function Home() {
     }
 
     const ctx = gsap.context(() => {
-      gsap.set("body", { overflow: "visible" });
+      gsap.set("body", {
+        overflow: "visible",
+
+        force3D: true,
+      });
+
+      ScrollTrigger.config({
+        autoRefreshEvents: "visibilitychange,DOMContentLoaded,load",
+        ignoreMobileResize: true,
+      });
     });
-    return () => ctx.revert();
+
+    return () => {
+      ctx.revert();
+      ScrollTrigger.killAll();
+    };
   }, []);
 
-  const handleLoaderComplete = () => {
-    setLoaderComplete(true);
-  };
+  const handleLoaderComplete = useMemo(
+    () => () => {
+      setLoaderComplete(true);
+    },
+    []
+  );
 
   return (
     <>
