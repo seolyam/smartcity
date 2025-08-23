@@ -29,14 +29,16 @@ export default function Community() {
     <div ref={comp}>
       <section className="py-44 md:py-56 px-6 relative">
         <div className="absolute bottom-1/2 left-1/2 -translate-x-1/2 z-10">
-          {" "}
-          <div className="absolute top-0 left-0 w-[800px] h-[800px] bg-gradient-radial from-white/8 via-white/3 to-transparent rounded-full -translate-x-1/2 -translate-y-1/2" />{" "}
-          <div className="absolute top-0 left-0 w-[800px] h-[800px] bg-gradient-radial from-blue-400/20 via-blue-500/10 to-transparent rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />{" "}
-          <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-gradient-radial from-cyan-400/15 via-cyan-500/8 to-transparent rounded-full blur-2xl -translate-x-1/2 -translate-y-1/2" />{" "}
-          <div className="absolute top-12 left-12 w-48 h-48 bg-white/6 rounded-full blur-3xl" />{" "}
-          <div className="absolute top-24 -right-12 w-32 h-32 bg-white/8 rounded-full blur-2xl" />{" "}
-          <div className="absolute -top-6 right-16 w-24 h-24 bg-white/10 rounded-full blur-xl" />{" "}
-          <div className="absolute top-32 -left-8 w-40 h-40 bg-white/7 rounded-full blur-3xl" />{" "}
+          <div className="absolute top-0 left-0 w-[900px] h-[900px] bg-gradient-radial from-[#6F8EC8]/30 via-[#6F8EC8]/15 to-transparent rounded-full blur-[220px] -translate-x-1/2 -translate-y-1/2" />
+
+          <div className="absolute top-0 left-0 w-[800px] h-[800px] bg-gradient-radial from-[#6F8EC8]/20 via-[#6F8EC8]/10 to-transparent rounded-full blur-[180px] -translate-x-1/2 -translate-y-1/2" />
+
+          <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-gradient-radial from-[#6F8EC8]/15 via-[#6F8EC8]/8 to-transparent rounded-full blur-[150px] -translate-x-1/2 -translate-y-1/2" />
+
+          <div className="absolute top-12 left-12 w-56 h-56 bg-[#6F8EC8]/10 rounded-full blur-[180px]" />
+          <div className="absolute top-24 -right-12 w-40 h-40 bg-[#6F8EC8]/10 rounded-full blur-[140px]" />
+          <div className="absolute -top-6 right-16 w-32 h-32 bg-[#6F8EC8]/12 rounded-full blur-[120px]" />
+          <div className="absolute top-32 -left-8 w-48 h-48 bg-[#6F8EC8]/8 rounded-full blur-[160px]" />
         </div>
 
         <div className="max-w-4xl mx-auto text-center relative z-10">
