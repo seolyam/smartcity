@@ -1,5 +1,4 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import Image from "next/image";
@@ -66,22 +65,46 @@ export default function Hero({ loaderComplete = false }: HeroProps) {
     <div ref={comp}>
       <section className="min-h-screen flex flex-col items-center justify-center px-6 relative py-28 md:py-36">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
-          <div className="-translate-y-16 md:-translate-y-20">
+          <div className="-translate-y-56 md:-translate-y-72">
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] md:w-[500px] h-[400px] md:h-[500px] bg-gradient-radial to-transparent rounded-full blur-2xl" />
-
             <div className="relative">
-              <Image
-                src="/images/3d.png"
-                alt="3D Futuristic Structure"
-                width={615}
-                height={615}
-                className="mx-auto will-change-auto"
-                priority
-                sizes="(max-width: 768px) 300px, 615px"
-                quality={75}
-                placeholder="blur"
-                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-              />
+              <div
+                className="relative overflow-hidden"
+                style={{
+                  WebkitMaskImage:
+                    "linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.25) 18%, rgba(0,0,0,0.6) 38%, rgba(0,0,0,1) 100%)",
+                  maskImage:
+                    "linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.25) 18%, rgba(0,0,0,0.6) 38%, rgba(0,0,0,1) 100%)",
+                  WebkitMaskSize: "100% 100%",
+                  maskSize: "100% 100%",
+                  WebkitMaskRepeat: "no-repeat",
+                  maskRepeat: "no-repeat",
+                }}
+              >
+                <Image
+                  src="/images/3d.png"
+                  alt="3D Futuristic Structure"
+                  width={615}
+                  height={615}
+                  className="mx-auto block will-change-auto"
+                  priority
+                  sizes="(max-width: 768px) 300px, 615px"
+                  quality={75}
+                  placeholder="blur"
+                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+                  style={{ display: "block" }}
+                />
+
+                <div
+                  className="absolute bottom-0 left-0 right-0 pointer-events-none"
+                  style={{
+                    height: "30%",
+                    background:
+                      "linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.6) 40%, rgba(0,0,0,0.0) 100%)",
+                    mixBlendMode: "normal",
+                  }}
+                />
+              </div>
             </div>
           </div>
         </div>

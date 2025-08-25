@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 
-export default function Navigation() {
+export default function Navbar() {
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 p-6 flex justify-between items-center backdrop-blur-sm bg-black/30">
+    <nav className="fixed top-0 left-0 right-0 z-50 p-8 px-24 flex justify-between items-center">
       <div className="text-2xl font-semibold text-white">MegaWorld</div>
       <Button
         variant="ghost"

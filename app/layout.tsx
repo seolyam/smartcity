@@ -1,6 +1,7 @@
 import type React from "react";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
+import { Playfair_Display } from "next/font/google";
 import "./globals.css";
 import BackgroundElements from "./components/BackgroundElements";
 
@@ -12,9 +13,13 @@ const poppins = Poppins({
   preload: true,
 });
 
-const appleGaramond = {
+const appleGaramond = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-apple-garamond",
-};
+  display: "swap",
+  preload: true,
+});
 
 export const metadata: Metadata = {
   title: "MegaWorld Smart City - Future-Ready Urban Development",

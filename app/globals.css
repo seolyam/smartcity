@@ -67,10 +67,19 @@
     @apply bg-black text-white;
     font-family: var(--font-poppins), sans-serif;
   }
+
+  h1,
+  h2 {
+    font-family: var(--font-apple-garamond);
+  }
 }
 
 .font-garamond {
   font-family: var(--font-apple-garamond);
+}
+
+.font-poppins {
+  font-family: var(--font-poppins);
 }
 
 ::-webkit-scrollbar {
