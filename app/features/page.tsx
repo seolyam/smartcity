@@ -57,14 +57,14 @@ export default function Features() {
             id="features-title"
             className="text-4xl md:text-5xl font-garamond font-semibold mb-4 text-white"
           >
-            Establishments in the Smart City
+            MegaWorld as of <br /> 2025{" "}
           </h2>
           <p
             id="features-desc"
             className="text-gray-300 mb-16 max-w-2xl mx-auto font-poppins font-light text-lg leading-relaxed"
           >
-            Discover world-class establishments that shape the lifestyle and
-            opportunities within Megaworld Smart City.
+            Megaworld Smart City is a future-ready urban development built on
+            innovation, sustainability, and intelligent design.
           </p>
 
           <div id="features-cards" className="grid md:grid-cols-3 gap-8">
