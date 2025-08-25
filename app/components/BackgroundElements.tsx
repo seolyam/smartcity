@@ -1,11 +1,11 @@
 "use client";
-
 import { useEffect, useRef, useState, useCallback } from "react";
 import { gsap } from "gsap";
 
 export default function BackgroundElements() {
   const gridRef = useRef<HTMLDivElement>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [scrollY, setScrollY] = useState(0);
   const [mounted, setMounted] = useState(false);
   const animationFrameRef = useRef<number | undefined>(undefined);
 
@@ -30,21 +30,32 @@ export default function BackgroundElements() {
     if (animationFrameRef.current) {
       cancelAnimationFrame(animationFrameRef.current);
     }
-
     animationFrameRef.current = requestAnimationFrame(() => {
       setMousePos({ x: e.clientX, y: e.clientY });
     });
   }, []);
 
+  const handleScroll = useCallback(() => {
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current);
+    }
+    animationFrameRef.current = requestAnimationFrame(() => {
+      setScrollY(window.scrollY);
+    });
+  }, []);
+
   useEffect(() => {
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("scroll", handleScroll);
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [handleMouseMove]);
+  }, [handleMouseMove, handleScroll]);
 
   useEffect(() => {
     if (mounted) {
@@ -56,6 +67,14 @@ export default function BackgroundElements() {
     }
   }, [mousePos, mounted]);
 
+  const scrollSpeed = 0.5;
+  const gridOffset = scrollY * scrollSpeed;
+
+  const windowHeight = 50;
+
+  const windowTop = (gridOffset / window.innerHeight) * 100;
+  const windowBottom = windowTop + windowHeight;
+
   return (
     <div
       ref={gridRef}
@@ -64,7 +83,7 @@ export default function BackgroundElements() {
       <div className="absolute inset-0 bg-black" />
 
       <div
-        className="absolute inset-0 grid-main opacity-90"
+        className="absolute inset-0 grid-main"
         style={{
           backgroundImage: `
             linear-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px),
@@ -74,8 +93,22 @@ export default function BackgroundElements() {
         }}
       />
 
-      <div className="absolute top-0 left-0 right-0 h-[40vh] bg-gradient-to-b from-black/30 to-transparent" />
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: `linear-gradient(
+            to bottom,
+            transparent 0%,
+            transparent ${Math.max(0, Math.min(100, windowTop))}%,
+            black ${Math.max(0, Math.min(100, windowTop))}%,
+            black ${Math.min(100, windowBottom)}%,
+            transparent ${Math.min(100, windowBottom)}%,
+            transparent 100%
+          )`,
+        }}
+      />
 
+      <div className="absolute top-0 left-0 right-0 h-[40vh] bg-gradient-to-b from-black/30 to-transparent" />
       <div className="absolute top-0 left-0 w-[50vw] h-[50vh] bg-gradient-radial from-transparent via-transparent to-black/40 rounded-full blur-3xl" />
       <div className="absolute top-0 right-0 w-[50vw] h-[50vh] bg-gradient-radial from-transparent via-transparent to-black/40 rounded-full blur-3xl" />
       <div className="absolute bottom-0 left-0 w-[50vw] h-[50vh] bg-gradient-radial from-transparent via-transparent to-black/40 rounded-full blur-3xl" />
@@ -85,9 +118,9 @@ export default function BackgroundElements() {
         className="absolute inset-0"
         style={{
           background: `
-      radial-gradient(circle at center, rgba(0,0,0,0) 65%, rgba(0,0,0,0.7) 90%, rgba(0,0,0,1) 100%),
-      radial-gradient(circle at center, rgba(0,0,0,0) 50%, rgba(0,0,0,0.5) 100%)
-    `,
+            radial-gradient(circle at center, rgba(0,0,0,0) 65%, rgba(0,0,0,0.7) 90%, rgba(0,0,0,1) 100%),
+            radial-gradient(circle at center, rgba(0,0,0,0) 50%, rgba(0,0,0,0.5) 100%)
+          `,
           pointerEvents: "none",
         }}
       />
