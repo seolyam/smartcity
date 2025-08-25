@@ -13,7 +13,10 @@ interface ScrollAnimationTarget {
   start?: string;
 }
 
-export const useScrollAnimation = (targets: ScrollAnimationTarget[]) => {
+export const useScrollAnimation = (
+  targets: ScrollAnimationTarget[],
+  containerRef?: React.RefObject<HTMLElement>
+) => {
   const comp = useRef<HTMLDivElement>(null);
 
   const scrollTrigText = useCallback(
@@ -27,12 +30,13 @@ export const useScrollAnimation = (targets: ScrollAnimationTarget[]) => {
         {
           scrollTrigger: {
             start: start || "top bottom",
-            trigger: trigger as string,
+            trigger: trigger,
             toggleActions: "restart none none reset",
             fastScrollEnd: true,
             preventOverlaps: true,
             invalidateOnRefresh: false,
             refreshPriority: -1,
+            scroller: containerRef?.current || undefined,
           },
           opacity: 1,
           y: 0,
@@ -43,7 +47,7 @@ export const useScrollAnimation = (targets: ScrollAnimationTarget[]) => {
         }
       );
     },
-    []
+    [containerRef]
   );
 
   const memoizedTargets = useMemo(() => targets, [targets]);
