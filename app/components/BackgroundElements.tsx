@@ -7,10 +7,19 @@ export default function BackgroundElements() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [scrollY, setScrollY] = useState(0);
   const [mounted, setMounted] = useState(false);
+  const [windowHeight, setWindowHeight] = useState(0);
   const animationFrameRef = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     setMounted(true);
+
+    if (typeof window !== "undefined") {
+      setWindowHeight(window.innerHeight);
+
+      const handleResize = () => setWindowHeight(window.innerHeight);
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }
   }, []);
 
   useEffect(() => {
@@ -45,6 +54,8 @@ export default function BackgroundElements() {
   }, []);
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
     window.addEventListener("scroll", handleScroll, { passive: true });
 
@@ -70,10 +81,9 @@ export default function BackgroundElements() {
   const scrollSpeed = 0.5;
   const gridOffset = scrollY * scrollSpeed;
 
-  const windowHeight = 50;
-
-  const windowTop = (gridOffset / window.innerHeight) * 100;
-  const windowBottom = windowTop + windowHeight;
+  const visibleWindowHeight = 50;
+  const windowTop = windowHeight ? (gridOffset / windowHeight) * 100 : 0;
+  const windowBottom = windowTop + visibleWindowHeight;
 
   return (
     <div
