@@ -4,10 +4,10 @@ import { useEffect, useState, useMemo } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import dynamic from "next/dynamic";
-import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
 import BackgroundElements from "./components/BackgroundElements";
 import { Loader } from "./components/Loader";
+import Navbar from "./components/Navbar";
 
 const Hero = dynamic(() => import("./hero/page"), {
   loading: () => <div className="min-h-screen" />,
@@ -66,13 +66,14 @@ export default function Home() {
     <>
       <Loader onComplete={handleLoaderComplete} />
       <div className="min-h-screen bg-black text-white overflow-visible relative">
-        <Navigation />
+        <Navbar />
+        <BackgroundElements />
         <Hero loaderComplete={loaderComplete} />
         <Features />
         <About />
         <Services />
         <Community />
-        <BackgroundElements />
+
         <Footer />
       </div>
     </>
