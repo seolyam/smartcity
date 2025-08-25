@@ -79,7 +79,7 @@ export default function Services() {
                 <div className="w-20 h-20 mx-auto mb-6 relative">
                   <Image
                     src={item.img}
-                    alt={item.title}
+                    alt={""}
                     fill
                     className="object-contain"
                   />
