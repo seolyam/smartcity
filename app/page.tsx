@@ -66,7 +66,6 @@ export default function Home() {
     <>
       <Loader onComplete={handleLoaderComplete} />
       <div className="min-h-screen bg-black text-white overflow-visible relative">
-        <Navbar />
         <BackgroundElements />
         <Hero loaderComplete={loaderComplete} />
         <Features />
