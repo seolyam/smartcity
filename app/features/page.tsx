@@ -25,18 +25,20 @@ export default function Features() {
     {
       trigger: "#features-title",
       target: "#features-title",
-      start: "top 85%",
+      start: "top 90%",
+      vars: { opacity: 0, y: 40, ease: "linear", duration: 0.4 },
     },
     {
       trigger: "#features-desc",
       target: "#features-desc",
-      start: "top 80%",
+      start: "top 90%",
+      vars: { opacity: 0, y: 40, ease: "linear", duration: 0.4 },
     },
     {
-      trigger: "#features-cards",
+      trigger: "#features-cards .feature-card",
       target: "#features-cards .feature-card",
-      stagger: 0.3,
-      start: "top 75%",
+      start: "top 90%",
+      vars: { opacity: 0, y: 60, ease: "linear", duration: 0.4 },
     },
   ];
 
@@ -57,7 +59,7 @@ export default function Features() {
             id="features-title"
             className="text-4xl md:text-5xl font-garamond font-semibold mb-4 text-white"
           >
-            MegaWorld as of <br /> 2025{" "}
+            MegaWorld as of <br /> 2030
           </h2>
           <p
             id="features-desc"
