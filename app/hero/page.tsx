@@ -1,65 +1,100 @@
 "use client";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import Image from "next/image";
 import { useMemo, useEffect, useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
 
 interface HeroProps {
   loaderComplete?: boolean;
 }
 
 export default function Hero({ loaderComplete = false }: HeroProps) {
-  const [isLoaded, setIsLoaded] = useState(false);
   const [showSubtitle, setShowSubtitle] = useState(false);
   const [showTitle, setShowTitle] = useState(false);
   const [showDesc, setShowDesc] = useState(false);
   const [showButtons, setShowButtons] = useState(false);
 
-  const startAnimationSequence = useCallback(() => {
+  useEffect(() => {
     if (!loaderComplete) return;
 
-    const timer = setTimeout(() => {
-      setIsLoaded(true);
+    const timers: number[] = [];
 
-      setTimeout(() => setShowSubtitle(true), 200);
-      setTimeout(() => setShowTitle(true), 400);
-      setTimeout(() => setShowDesc(true), 600);
-      setTimeout(() => setShowButtons(true), 800);
-    }, 100);
+    timers.push(
+      window.setTimeout(() => {
+        timers.push(window.setTimeout(() => setShowSubtitle(true), 300));
+        timers.push(window.setTimeout(() => setShowTitle(true), 600));
+        timers.push(window.setTimeout(() => setShowDesc(true), 900));
+        timers.push(window.setTimeout(() => setShowButtons(true), 1200));
+      }, 300)
+    );
 
-    return () => clearTimeout(timer);
+    return () => {
+      timers.forEach((id) => clearTimeout(id));
+    };
   }, [loaderComplete]);
-
-  useEffect(() => {
-    startAnimationSequence();
-  }, [startAnimationSequence]);
 
   const animationTargets = useMemo(
     () => [
-      {
-        trigger: "#hero-subtitle",
-        target: "#hero-subtitle",
-        start: "top 90%",
-      },
-      {
-        trigger: "#hero-title",
-        target: "#hero-title",
-        start: "top 85%",
-      },
-      {
-        trigger: "#hero-desc",
-        target: "#hero-desc",
-        start: "top 80%",
-      },
-      {
-        trigger: "#hero-buttons",
-        target: "#hero-buttons",
-        start: "top 75%",
-      },
+      { trigger: "#hero-subtitle", target: "#hero-subtitle", start: "top 90%" },
+      { trigger: "#hero-title", target: "#hero-title", start: "top 85%" },
+      { trigger: "#hero-desc", target: "#hero-desc", start: "top 80%" },
+      { trigger: "#hero-buttons", target: "#hero-buttons", start: "top 75%" },
     ],
     []
   );
-  const comp = useScrollAnimation(animationTargets);
+
+  const comp: any = useScrollAnimation(animationTargets);
+  const router = useRouter();
+
+  const animateScrollTo = (targetY: number, duration = 3000) => {
+    const startY = window.scrollY || window.pageYOffset;
+    const diff = targetY - startY;
+    if (diff === 0) return;
+    let start: number | null = null;
+
+    const linear = (t: number) => t;
+
+    const step = (timestamp: number) => {
+      if (!start) start = timestamp;
+      const elapsed = timestamp - start;
+      const t = Math.min(1, elapsed / duration);
+      const eased = linear(t);
+      window.scrollTo(0, Math.round(startY + diff * eased));
+      if (elapsed < duration) requestAnimationFrame(step);
+    };
+
+    requestAnimationFrame(step);
+  };
+
+  const handleExplore = useCallback(() => {
+    if (typeof window === "undefined") {
+      router.push("/features");
+      return;
+    }
+
+    const candidates = ["features-title", "features", "features-cards"];
+    let el: HTMLElement | null = null;
+    for (const id of candidates) {
+      const found = document.getElementById(id);
+      if (found) {
+        el = found as HTMLElement;
+        break;
+      }
+    }
+
+    const SCROLL_OFFSET = 300;
+    const SCROLL_DURATION_MS = 3000;
+
+    if (el) {
+      const rect = el.getBoundingClientRect();
+      const targetTop = Math.max(0, rect.top + window.scrollY - SCROLL_OFFSET);
+      animateScrollTo(targetTop, SCROLL_DURATION_MS);
+    } else {
+      router.push("/features");
+    }
+  }, [router]);
 
   return (
     <div ref={comp}>
@@ -90,9 +125,6 @@ export default function Hero({ loaderComplete = false }: HeroProps) {
                   priority
                   sizes="(max-width: 768px) 300px, 615px"
                   quality={75}
-                  placeholder="blur"
-                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-                  style={{ display: "block" }}
                 />
 
                 <div
@@ -101,7 +133,6 @@ export default function Hero({ loaderComplete = false }: HeroProps) {
                     height: "30%",
                     background:
                       "linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.6) 40%, rgba(0,0,0,0.0) 100%)",
-                    mixBlendMode: "normal",
                   }}
                 />
               </div>
@@ -112,7 +143,7 @@ export default function Hero({ loaderComplete = false }: HeroProps) {
         <div className="text-center max-w-5xl mx-auto relative z-30 mt-20 md:mt-28">
           <div
             id="hero-subtitle"
-            className={`text-gray-200 font-poppins font-medium text-base md:text-lg transition-all duration-800 ease-out translate-y-6 will-change-transform ${
+            className={`text-gray-200 font-poppins font-medium text-base md:text-lg transition-all duration-\[1200ms\] ease-out translate-y-6 will-change-transform ${
               showSubtitle
                 ? "[clip-path:polygon(0%_0%,_100%_0%,_100%_100%,_0%_100%)] translate-y-0"
                 : "[clip-path:polygon(0%_100%,_100%_100%,_100%_100%,_0%_100%)]"
@@ -123,7 +154,7 @@ export default function Hero({ loaderComplete = false }: HeroProps) {
 
           <div
             id="hero-title"
-            className={`text-[40px] md:text-[64px] leading-[1.1] font-garamond font-semibold mb-6 text-white transition-all duration-800 ease-out translate-y-8 will-change-transform ${
+            className={`text-[40px] md:text-[64px] leading-[1.1] font-garamond font-semibold mb-6 text-white transition-all duration-\[1200ms\] ease-out translate-y-8 will-change-transform ${
               showTitle
                 ? "[clip-path:polygon(0%_0%,_100%_0%,_100%_100%,_0%_100%)] translate-y-0"
                 : "[clip-path:polygon(0%_100%,_100%_100%,_100%_100%,_0%_100%)]"
@@ -137,7 +168,7 @@ export default function Hero({ loaderComplete = false }: HeroProps) {
 
           <div
             id="hero-desc"
-            className={`text-lg md:text-xl text-gray-300 mb-10 max-w-[50%] mx-auto font-poppins font-light leading-relaxed transition-all duration-800 ease-out translate-y-6 will-change-transform ${
+            className={`text-lg md:text-xl text-gray-300 mb-10 max-w-[50%] mx-auto font-poppins font-light leading-relaxed transition-all duration-\[1200ms\] ease-out translate-y-6 will-change-transform ${
               showDesc
                 ? "[clip-path:polygon(0%_0%,_100%_0%,_100%_100%,_0%_100%)] translate-y-0"
                 : "[clip-path:polygon(0%_100%,_100%_100%,_100%_100%,_0%_100%)]"
@@ -151,31 +182,32 @@ export default function Hero({ loaderComplete = false }: HeroProps) {
 
           <div
             id="hero-buttons"
-            className={`flex gap-4 justify-center transition-all duration-800 ease-out translate-y-4 will-change-transform ${
+            className={`flex gap-4 justify-center transition-all duration-\[1200ms\] ease-out translate-y-4 will-change-transform ${
               showButtons
                 ? "[clip-path:polygon(0%_0%,_100%_0%,_100%_100%,_0%_100%)] translate-y-0"
                 : "[clip-path:polygon(0%_100%,_100%_100%,_100%_100%,_0%_100%)]"
             }`}
           >
-            <Button className="bg-blue-600 hover:bg-blue-700 px-8 py-3 text-lg font-poppins font-medium rounded-lg transition-all duration-300 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40">
+            <Button
+              onClick={handleExplore}
+              className="bg-blue-600 hover:bg-blue-700 px-8 py-3 text-lg font-poppins font-medium rounded-lg transition-all duration-\[400ms\] shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40"
+            >
               Explore
             </Button>
+
             <Button
               variant="outline"
-              className="border-white/30 text-white hover:bg-white/10 px-8 py-3 text-lg bg-transparent font-poppins font-medium rounded-lg transition-all duration-300 "
+              className="border-white/30 text-white hover:bg-white/10 px-8 py-3 text-lg bg-transparent font-poppins font-medium rounded-lg transition-all duration-\[400ms\]"
             >
-              About
+              <Link href="/about">About</Link>
             </Button>
           </div>
         </div>
 
         <div className="absolute bottom-1/2 left-1/2 -translate-x-1/2 z-10">
           <div className="absolute top-0 left-0 w-[900px] h-[900px] bg-gradient-radial from-[#6F8EC8]/30 via-[#6F8EC8]/15 to-transparent rounded-full blur-[220px] -translate-x-1/2 -translate-y-1/2" />
-
           <div className="absolute top-0 left-0 w-[800px] h-[800px] bg-gradient-radial from-[#6F8EC8]/20 via-[#6F8EC8]/10 to-transparent rounded-full blur-[180px] -translate-x-1/2 -translate-y-1/2" />
-
           <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-gradient-radial from-[#6F8EC8]/15 via-[#6F8EC8]/8 to-transparent rounded-full blur-[150px] -translate-x-1/2 -translate-y-1/2" />
-
           <div className="absolute top-12 left-12 w-56 h-56 bg-[#6F8EC8]/10 rounded-full blur-[180px]" />
           <div className="absolute top-24 -right-12 w-40 h-40 bg-[#6F8EC8]/10 rounded-full blur-[140px]" />
           <div className="absolute -top-6 right-16 w-32 h-32 bg-[#6F8EC8]/12 rounded-full blur-[120px]" />
