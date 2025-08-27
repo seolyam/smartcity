@@ -1,9 +1,10 @@
 import type React from "react";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Poppins } from "next/font/google";
 import { Playfair_Display } from "next/font/google";
 import "./globals.css";
 import BackgroundElements from "./components/BackgroundElements";
+import Navbar from "./components/Navbar";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -27,8 +28,12 @@ export const metadata: Metadata = {
     "A living city that evolves with its people and the world around it. Creating a dynamic ecosystem driven by intelligent systems, green infrastructure, and forward-thinking solutions.",
   keywords:
     "smart city, urban development, sustainable design, intelligent systems",
-  viewport: "width=device-width, initial-scale=1",
   robots: "index, follow",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
@@ -41,8 +46,8 @@ export default function RootLayout({
       <body
         className={`${poppins.variable} ${appleGaramond.variable} font-sans antialiased relative`}
       >
+        <Navbar />
         <BackgroundElements />
-
         <div className="relative z-10">{children}</div>
       </body>
     </html>
