@@ -1,34 +1,34 @@
-"use client";
+"use client"
 
-import Image from "next/image";
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Image from "next/image"
+import { useEffect, useRef } from "react"
+import { gsap } from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger)
 
 export default function Services() {
-  const titleRef = useRef<HTMLHeadingElement | null>(null);
-  const descRef = useRef<HTMLParagraphElement | null>(null);
-  const cardsRef = useRef<HTMLDivElement[]>([]);
+  const titleRef = useRef<HTMLHeadingElement | null>(null)
+  const descRef = useRef<HTMLParagraphElement | null>(null)
+  const cardsRef = useRef<HTMLDivElement[]>([])
 
   const services = [
     {
       title: "Energy-Efficient Lighting & Solar Streetlights",
       desc: "Sustainable and cost-effective lighting solutions that reduce energy use and keep the city bright and eco-friendly.",
-      img: "/images/lighting.png",
+      img: "/images/energy.png",
     },
     {
       title: "Smart EV Charging",
       desc: "Convenient, fast, and smart charging stations across the city to support the transition to electric mobility.",
-      img: "/images/ev-charging.png",
+      img: "/images/charging.png",
     },
     {
       title: "Fiber Optic Connectivity & Free Public Wi-Fi",
       desc: "High-speed fiber optic internet and reliable free public Wi-Fi for seamless connectivity everywhere.",
-      img: "/images/connectivity.png",
+      img: "/images/wifi.png",
     },
-  ];
+  ]
 
   useEffect(() => {
     if (titleRef.current) {
@@ -44,8 +44,8 @@ export default function Services() {
             trigger: "#services-title",
             start: "top 85%",
           },
-        }
-      );
+        },
+      )
     }
 
     if (descRef.current) {
@@ -61,8 +61,8 @@ export default function Services() {
             trigger: "#services-desc",
             start: "top 85%",
           },
-        }
-      );
+        },
+      )
     }
 
     if (cardsRef.current.length > 0) {
@@ -79,10 +79,10 @@ export default function Services() {
             start: "top center",
             toggleActions: "play none none reverse",
           },
-        }
-      );
+        },
+      )
     }
-  }, []);
+  }, [])
 
   return (
     <section className="py-44 md:py-52 px-6 relative">
@@ -108,8 +108,8 @@ export default function Services() {
           ref={descRef}
           className="text-gray-300 mb-16 max-w-2xl mx-auto font-poppins font-light text-lg leading-relaxed opacity-0"
         >
-          Explore essential services designed to provide convenience,
-          sustainability, and a high quality of life in Megaworld Smart City.
+          Explore essential services designed to provide convenience, sustainability, and a high quality of life in
+          Megaworld Smart City.
         </p>
 
         <div id="services-cards" className="grid md:grid-cols-3 gap-8">
@@ -117,30 +117,21 @@ export default function Services() {
             <div
               key={index}
               ref={(el) => {
-                if (el) cardsRef.current[index] = el;
+                if (el) cardsRef.current[index] = el
               }}
               className="service-card bg-white/5 backdrop-blur-sm border border-white/12 rounded-2xl p-8 hover:bg-white/10 transition-all duration-300 opacity-0"
             >
               <div className="w-20 h-20 mx-auto mb-6 relative">
-                <Image
-                  src={item.img}
-                  alt={""}
-                  fill
-                  className="object-contain"
-                />
+                <Image src={item.img || "/placeholder.svg"} alt={""} fill className="object-contain" />
               </div>
 
-              <h3 className="text-2xl font-garamond font-medium mb-4 text-white">
-                {item.title}
-              </h3>
+              <h3 className="text-2xl font-garamond font-medium mb-4 text-white">{item.title}</h3>
 
-              <p className="text-gray-300 leading-relaxed font-poppins font-light">
-                {item.desc}
-              </p>
+              <p className="text-gray-300 leading-relaxed font-poppins font-light">{item.desc}</p>
             </div>
           ))}
         </div>
       </div>
     </section>
-  );
+  )
 }

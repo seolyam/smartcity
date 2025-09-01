@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import Image from "next/image";
@@ -93,6 +92,34 @@ export default function Hero({ loaderComplete = false }: HeroProps) {
       animateScrollTo(targetTop, SCROLL_DURATION_MS);
     } else {
       router.push("/features");
+    }
+  }, [router]);
+
+  const handleAbout = useCallback(() => {
+    if (typeof window === "undefined") {
+      router.push("/about");
+      return;
+    }
+
+    const candidates = ["about-title", "about", "about-section"];
+    let el: HTMLElement | null = null;
+    for (const id of candidates) {
+      const found = document.getElementById(id);
+      if (found) {
+        el = found as HTMLElement;
+        break;
+      }
+    }
+
+    const SCROLL_OFFSET = 300;
+    const SCROLL_DURATION_MS = 3000;
+
+    if (el) {
+      const rect = el.getBoundingClientRect();
+      const targetTop = Math.max(0, rect.top + window.scrollY - SCROLL_OFFSET);
+      animateScrollTo(targetTop, SCROLL_DURATION_MS);
+    } else {
+      router.push("/about");
     }
   }, [router]);
 
@@ -197,9 +224,10 @@ export default function Hero({ loaderComplete = false }: HeroProps) {
 
             <Button
               variant="outline"
+              onClick={handleAbout}
               className="border-white/30 text-white hover:bg-white/10 px-8 py-3 text-lg bg-transparent font-poppins font-medium rounded-lg transition-all duration-\[400ms\]"
             >
-              <Link href="/about">About</Link>
+              About
             </Button>
           </div>
         </div>
