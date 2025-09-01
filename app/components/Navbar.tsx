@@ -1,3 +1,6 @@
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,21 +11,46 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Menu, Home, Zap, Settings, Users } from "lucide-react";
+import { Menu, Home, Zap, Settings, Users, Image } from "lucide-react";
 
 export default function Navbar() {
   const navigationItems = [
     { name: "Home", href: "/", icon: Home },
     { name: "Features", href: "/features", icon: Zap },
     { name: "Services", href: "/services", icon: Settings },
+    { name: "Gallery", href: "/gallery", icon: Image },
     { name: "Community", href: "/community", icon: Users },
   ];
 
+  const [show, setShow] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > lastScrollY) {
+        // scrolling down
+        setShow(false);
+      } else {
+        // scrolling up
+        setShow(true);
+      }
+      setLastScrollY(window.scrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
+
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 p-8 px-24 flex justify-between items-center">
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 p-8 px-24 flex justify-between items-center transition-transform duration-300 ${
+        show ? "translate-y-0" : "-translate-y-full"
+      }`}
+    >
       <Link
         href="/"
-        className="text-2xl font-semibold text-white hover:text-white/80 transition-colors duration-300"
+        className="text-2xl font-semibold text-white hover:text-white/80 transition-colors duration-300 font-apple-garamond"
       >
         MegaWorld
       </Link>
