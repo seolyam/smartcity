@@ -8,6 +8,7 @@ import Footer from "./components/Footer";
 import BackgroundElements from "./components/BackgroundElements";
 import { Loader } from "./components/Loader";
 import Navbar from "./components/Navbar";
+import Gallery from "./gallery/page";
 
 const Hero = dynamic(() => import("./hero/page"), {
   loading: () => <div className="min-h-screen" />,
@@ -39,7 +40,6 @@ export default function Home() {
     const ctx = gsap.context(() => {
       gsap.set("body", {
         overflow: "visible",
-
         force3D: true,
       });
 
@@ -71,8 +71,8 @@ export default function Home() {
         <Features />
         <About />
         <Services />
+        <Gallery />
         <Community />
-
         <Footer />
       </div>
     </>
