@@ -1,7 +1,6 @@
 import type React from "react";
 import type { Metadata, Viewport } from "next";
-import { Poppins } from "next/font/google";
-import { Playfair_Display } from "next/font/google";
+import { Poppins, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import BackgroundElements from "./components/BackgroundElements";
 import Navbar from "./components/Navbar";
