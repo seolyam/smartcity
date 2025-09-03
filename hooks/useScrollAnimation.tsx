@@ -40,9 +40,8 @@ export const useScrollAnimation = (
           },
           opacity: 1,
           y: 0,
-          duration: 1.2,
-          stagger: stag,
-          ease: "power3.out",
+          duration: 0.6,
+          ease: "none",
           force3D: true,
         }
       );
