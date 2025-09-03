@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import {
@@ -9,6 +9,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi,
 } from "@/components/ui/carousel";
 
 const galleryImages = [
@@ -40,17 +41,20 @@ const galleryImages = [
 ];
 
 export default function Gallery() {
-  // Use scroll animation hook with .gallery-animate
+  const [slides, setSlides] = useState(() => [
+    ...galleryImages,
+    ...galleryImages,
+  ]);
+  const [api, setApi] = useState<CarouselApi | null>(null);
+
   useScrollAnimation([
     {
       trigger: ".gallery-animate",
       target: ".gallery-animate",
-      stagger: 0.2,
       start: "top 80%",
     },
   ]);
 
-  // Optional: Add fallback fade-in with CSS
   useEffect(() => {
     const elements = document.querySelectorAll(".gallery-animate");
     elements.forEach((el, index) => {
@@ -59,10 +63,57 @@ export default function Gallery() {
     });
   }, []);
 
+  const handleSelect = useCallback(() => {
+    if (!api) return;
+    const lastIndex = slides.length - 1;
+    const current = api.selectedScrollSnap();
+    if (current >= lastIndex - 3) {
+      setSlides((prev) => [...prev, ...galleryImages]);
+    }
+  }, [api, slides.length]);
+
+  useEffect(() => {
+    if (!api) return;
+    api.on("select", handleSelect);
+    return () => {
+      api.off("select", handleSelect);
+    };
+  }, [api, handleSelect]);
+
   return (
-    <section className="relative py-20 px-4 md:px-8 min-h-screen flex items-center justify-center bg-black">
-      <div className="max-w-6xl mx-auto w-full">
-        {/* Header */}
+    <section className="relative py-20 px-4 md:px-8 min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Layered Radial Background */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full blur-[240px]"
+          style={{
+            width: 1400,
+            height: 1400,
+            background:
+              "radial-gradient(circle, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.55) 28%, rgba(0,0,0,0.35) 48%, rgba(0,0,0,0.18) 66%, rgba(0,0,0,0.05) 82%, rgba(0,0,0,0) 100%)",
+          }}
+        />
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full blur-[200px]"
+          style={{
+            width: 1100,
+            height: 1100,
+            background:
+              "radial-gradient(circle, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.42) 30%, rgba(0,0,0,0.22) 55%, rgba(0,0,0,0.1) 75%, rgba(0,0,0,0) 95%)",
+          }}
+        />
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full blur-[160px]"
+          style={{
+            width: 900,
+            height: 900,
+            background:
+              "radial-gradient(circle, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.34) 26%, rgba(0,0,0,0.18) 48%, rgba(0,0,0,0.06) 70%, rgba(0,0,0,0) 100%)",
+          }}
+        />
+      </div>
+
+      <div className="relative max-w-6xl mx-auto w-full z-10">
         <div className="text-center mb-16 gallery-animate">
           <h1 className="text-4xl md:text-6xl font-garamond mb-4 text-white">
             MegaWorld Gallery
@@ -73,17 +124,17 @@ export default function Gallery() {
           </p>
         </div>
 
-        {/* Carousel */}
         <div className="gallery-animate">
           <Carousel
             opts={{
               align: "start",
-              loop: true,
+              loop: false,
             }}
+            setApi={setApi}
             className="w-full max-w-5xl mx-auto"
           >
             <CarouselContent>
-              {galleryImages.map((image, index) => (
+              {slides.map((image, index) => (
                 <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
                   <div className="p-2">
                     <div className="relative group overflow-hidden rounded-lg bg-gray-900/50 backdrop-blur-sm border border-white/10">
@@ -92,11 +143,11 @@ export default function Gallery() {
                           src={image.src}
                           alt={image.alt}
                           fill
-                          priority={index === 0} // first image loads faster
+                          priority={index === 0}
                           className="object-cover transition-transform duration-500 group-hover:scale-110"
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          quality={90}
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                       </div>
                       <div className="p-4">
                         <h3 className="font-garamond text-lg text-white mb-2">
@@ -116,7 +167,6 @@ export default function Gallery() {
           </Carousel>
         </div>
 
-        {/* Footer */}
         <div className="text-center mt-16 gallery-animate">
           <p className="font-poppins text-gray-300 max-w-3xl mx-auto leading-relaxed">
             From modern commercial buildings to vibrant entertainment districts,
