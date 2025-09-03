@@ -19,12 +19,12 @@ export default function Community() {
     {
       trigger: "#community-subtitle",
       target: "#community-subtitle",
-      start: "top 80%",
+      start: "top 85%",
     },
     {
       trigger: "#community-search",
       target: "#community-search",
-      start: "top 75%",
+      start: "top 85%",
     },
   ];
 
@@ -38,8 +38,7 @@ export default function Community() {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: "#community-title",
-          start: "top 80%",
-          toggleActions: "play none none reverse",
+          start: "top 85%",
         },
       });
 
@@ -52,7 +51,6 @@ export default function Community() {
           duration: 2,
           delay: 1,
           ease: "expo.out",
-          stagger: 0.2,
         }
       );
     }

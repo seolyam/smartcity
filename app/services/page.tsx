@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import Image from "next/image"
-import { useEffect, useRef } from "react"
-import { gsap } from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
+import Image from "next/image";
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger)
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Services() {
-  const titleRef = useRef<HTMLHeadingElement | null>(null)
-  const descRef = useRef<HTMLParagraphElement | null>(null)
-  const cardsRef = useRef<HTMLDivElement[]>([])
+  const titleRef = useRef<HTMLHeadingElement | null>(null);
+  const descRef = useRef<HTMLParagraphElement | null>(null);
+  const cardsRef = useRef<HTMLDivElement[]>([]);
 
   const services = [
     {
@@ -28,7 +28,7 @@ export default function Services() {
       desc: "High-speed fiber optic internet and reliable free public Wi-Fi for seamless connectivity everywhere.",
       img: "/images/wifi.png",
     },
-  ]
+  ];
 
   useEffect(() => {
     if (titleRef.current) {
@@ -43,9 +43,10 @@ export default function Services() {
           scrollTrigger: {
             trigger: "#services-title",
             start: "top 85%",
+            toggleActions: "play none none reverse", // ✅ fade down when scrolling up
           },
-        },
-      )
+        }
+      );
     }
 
     if (descRef.current) {
@@ -60,9 +61,10 @@ export default function Services() {
           scrollTrigger: {
             trigger: "#services-desc",
             start: "top 85%",
+            toggleActions: "play none none reverse", // ✅ same as title
           },
-        },
-      )
+        }
+      );
     }
 
     if (cardsRef.current.length > 0) {
@@ -76,16 +78,17 @@ export default function Services() {
           ease: "none",
           scrollTrigger: {
             trigger: "#services-cards",
-            start: "top center",
-            toggleActions: "play none none reverse",
+            start: "top 80%",
+            toggleActions: "play none none reverse", // ✅ reverse on scroll up
           },
-        },
-      )
+        }
+      );
     }
-  }, [])
+  }, []);
 
   return (
     <section className="py-44 md:py-52 px-6 relative">
+      {/* Background blur elements */}
       <div className="absolute top-10 right-10 w-36 h-36 bg-white/8 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-20 left-16 w-28 h-28 bg-white/10 rounded-full blur-2xl pointer-events-none" />
       <div className="absolute top-1/3 left-8 w-20 h-20 bg-white/12 rounded-full blur-xl pointer-events-none" />
@@ -94,6 +97,7 @@ export default function Services() {
         <div className="w-[600px] h-[400px] bg-gradient-radial from-[#6F8EC8]/20 via-[#6F8EC8]/10 to-transparent rounded-full blur-3xl" />
       </div>
 
+      {/* Content */}
       <div className="max-w-6xl mx-auto text-center relative z-10">
         <h2
           id="services-title"
@@ -108,8 +112,8 @@ export default function Services() {
           ref={descRef}
           className="text-gray-300 mb-16 max-w-2xl mx-auto font-poppins font-light text-lg leading-relaxed opacity-0"
         >
-          Explore essential services designed to provide convenience, sustainability, and a high quality of life in
-          Megaworld Smart City.
+          Explore essential services designed to provide convenience,
+          sustainability, and a high quality of life in Megaworld Smart City.
         </p>
 
         <div id="services-cards" className="grid md:grid-cols-3 gap-8">
@@ -117,21 +121,30 @@ export default function Services() {
             <div
               key={index}
               ref={(el) => {
-                if (el) cardsRef.current[index] = el
+                if (el) cardsRef.current[index] = el;
               }}
               className="service-card bg-white/5 backdrop-blur-sm border border-white/12 rounded-2xl p-8 hover:bg-white/10 transition-all duration-300 opacity-0"
             >
               <div className="w-20 h-20 mx-auto mb-6 relative">
-                <Image src={item.img || "/placeholder.svg"} alt={""} fill className="object-contain" />
+                <Image
+                  src={item.img || "/placeholder.svg"}
+                  alt=""
+                  fill
+                  className="object-contain"
+                />
               </div>
 
-              <h3 className="text-2xl font-garamond font-medium mb-4 text-white">{item.title}</h3>
+              <h3 className="text-2xl font-garamond font-medium mb-4 text-white">
+                {item.title}
+              </h3>
 
-              <p className="text-gray-300 leading-relaxed font-poppins font-light">{item.desc}</p>
+              <p className="text-gray-300 leading-relaxed font-poppins font-light">
+                {item.desc}
+              </p>
             </div>
           ))}
         </div>
       </div>
     </section>
-  )
+  );
 }
