@@ -10,6 +10,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Community() {
+  // make title, subtitle and search all start at the same point
   const animationTargets = [
     {
       trigger: "#community-title",
@@ -19,12 +20,12 @@ export default function Community() {
     {
       trigger: "#community-subtitle",
       target: "#community-subtitle",
-      start: "top 80%",
+      start: "top 85%", // <- changed to match title
     },
     {
       trigger: "#community-search",
       target: "#community-search",
-      start: "top 75%",
+      start: "top 85%", // <- changed to match title
     },
   ];
 
@@ -38,8 +39,7 @@ export default function Community() {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: "#community-title",
-          start: "top 80%",
-          toggleActions: "play none none reverse",
+          start: "top 85%", // sync glow trigger with the titles/search
         },
       });
 
@@ -52,7 +52,6 @@ export default function Community() {
           duration: 2,
           delay: 1,
           ease: "expo.out",
-          stagger: 0.2,
         }
       );
     }
