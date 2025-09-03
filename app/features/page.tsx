@@ -59,7 +59,7 @@ export default function Features() {
             id="features-title"
             className="text-4xl md:text-5xl font-garamond font-semibold mb-4 text-white"
           >
-            MegaWorld as of <br /> 2030
+            MegaWorld as of <br /> 2025
           </h2>
           <p
             id="features-desc"
