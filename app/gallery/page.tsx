@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import Image from "next/image";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import {
@@ -46,6 +46,8 @@ export default function Gallery() {
     ...galleryImages,
   ]);
   const [api, setApi] = useState<CarouselApi | null>(null);
+  const autoplayIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const AUTOPLAY_DELAY = 4000; // 4 seconds
 
   useScrollAnimation([
     {
@@ -72,13 +74,50 @@ export default function Gallery() {
     }
   }, [api, slides.length]);
 
+  // Autoplay functionality
+  const startAutoplay = useCallback(() => {
+    if (!api) return;
+
+    autoplayIntervalRef.current = setInterval(() => {
+      api.scrollNext();
+    }, AUTOPLAY_DELAY);
+  }, [api]);
+
+  const stopAutoplay = useCallback(() => {
+    if (autoplayIntervalRef.current) {
+      clearInterval(autoplayIntervalRef.current);
+      autoplayIntervalRef.current = null;
+    }
+  }, []);
+
+  // Handle mouse events for autoplay pause/resume
+  const handleMouseEnter = useCallback(() => {
+    stopAutoplay();
+  }, [stopAutoplay]);
+
+  const handleMouseLeave = useCallback(() => {
+    startAutoplay();
+  }, [startAutoplay]);
+
+  // Setup autoplay and event listeners
   useEffect(() => {
     if (!api) return;
+
     api.on("select", handleSelect);
+    startAutoplay();
+
     return () => {
       api.off("select", handleSelect);
+      stopAutoplay();
     };
-  }, [api, handleSelect]);
+  }, [api, handleSelect, startAutoplay, stopAutoplay]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      stopAutoplay();
+    };
+  }, [stopAutoplay]);
 
   return (
     <section className="relative py-20 px-4 md:px-8 min-h-screen flex items-center justify-center overflow-hidden">
@@ -125,46 +164,51 @@ export default function Gallery() {
         </div>
 
         <div className="gallery-animate">
-          <Carousel
-            opts={{
-              align: "start",
-              loop: false,
-            }}
-            setApi={setApi}
-            className="w-full max-w-5xl mx-auto"
-          >
-            <CarouselContent>
-              {slides.map((image, index) => (
-                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-                  <div className="p-2">
-                    <div className="relative group overflow-hidden rounded-lg bg-gray-900/50 backdrop-blur-sm border border-white/10">
-                      <div className="aspect-[4/3] relative">
-                        <Image
-                          src={image.src}
-                          alt={image.alt}
-                          fill
-                          priority={index === 0}
-                          className="object-cover transition-transform duration-500 group-hover:scale-110"
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          quality={90}
-                        />
-                      </div>
-                      <div className="p-4">
-                        <h3 className="font-garamond text-lg text-white mb-2">
-                          {image.title}
-                        </h3>
-                        <p className="font-poppins text-sm text-gray-400">
-                          {image.alt}
-                        </p>
+          <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+            <Carousel
+              opts={{
+                align: "start",
+                loop: false,
+              }}
+              setApi={setApi}
+              className="w-full max-w-5xl mx-auto"
+            >
+              <CarouselContent>
+                {slides.map((image, index) => (
+                  <CarouselItem
+                    key={index}
+                    className="md:basis-1/2 lg:basis-1/3"
+                  >
+                    <div className="p-2">
+                      <div className="relative group overflow-hidden rounded-lg bg-gray-900/50 backdrop-blur-sm border border-white/10">
+                        <div className="aspect-[4/3] relative">
+                          <Image
+                            src={image.src}
+                            alt={image.alt}
+                            fill
+                            priority={index === 0}
+                            className="object-cover transition-transform duration-500 group-hover:scale-110"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            quality={90}
+                          />
+                        </div>
+                        <div className="p-4">
+                          <h3 className="font-garamond text-lg text-white mb-2">
+                            {image.title}
+                          </h3>
+                          <p className="font-poppins text-sm text-gray-400">
+                            {image.alt}
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious className="bg-white/10 border-white/20 text-white hover:bg-white/20 -left-12" />
-            <CarouselNext className="bg-white/10 border-white/20 text-white hover:bg-white/20 -right-12" />
-          </Carousel>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="bg-white/10 border-white/20 text-white hover:bg-white/20 -left-12" />
+              <CarouselNext className="bg-white/10 border-white/20 text-white hover:bg-white/20 -right-12" />
+            </Carousel>
+          </div>
         </div>
 
         <div className="text-center mt-16 gallery-animate">

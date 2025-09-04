@@ -56,7 +56,6 @@ export default function BackgroundElements() {
     }
     animationFrameRef.current = requestAnimationFrame(() => {
       setScrollY(window.scrollY);
-      // Update mouse position with scroll offset
       setMousePos((prev) => ({
         ...prev,
         y: prev.y - scrollY + window.scrollY,
@@ -98,13 +97,11 @@ export default function BackgroundElements() {
 
   return (
     <>
-      {/* Background layer - viewport height only */}
       <div
         ref={gridRef}
         className="fixed inset-0 w-full h-full pointer-events-none z-0"
       >
         <div className="absolute inset-0 bg-black" />
-
         <div
           className="absolute inset-0 grid-main"
           style={{
@@ -115,7 +112,7 @@ export default function BackgroundElements() {
             backgroundSize: `${100 / 11.5}vw calc(100vh / 7)`,
           }}
         />
-
+        // curtain effect
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -130,13 +127,11 @@ export default function BackgroundElements() {
             )`,
           }}
         />
-
         <div className="absolute top-0 left-0 right-0 h-[40vh] bg-gradient-to-b from-black/30 to-transparent" />
         <div className="absolute top-0 left-0 w-[50vw] h-[50vh] bg-gradient-radial from-transparent via-transparent to-black/40 rounded-full blur-3xl" />
         <div className="absolute top-0 right-0 w-[50vw] h-[50vh] bg-gradient-radial from-transparent via-transparent to-black/40 rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-[50vw] h-[50vh] bg-gradient-radial from-transparent via-transparent to-black/40 rounded-full blur-3xl" />
         <div className="absolute bottom-0 right-0 w-[50vw] h-[50vh] bg-gradient-radial from-transparent via-transparent to-black/40 rounded-full blur-3xl" />
-
         <div
           className="absolute inset-0"
           style={{
@@ -148,8 +143,7 @@ export default function BackgroundElements() {
           }}
         />
       </div>
-
-      {/* Flashlight layer - covers full document height */}
+      //flashlight
       {mounted && (
         <div
           className="absolute top-0 left-0 w-full flashlight pointer-events-none z-50"
