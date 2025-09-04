@@ -104,9 +104,9 @@ export default function Hero({ loaderComplete = false }: HeroProps) {
   return (
     <div ref={comp}>
       <section className="min-h-screen flex flex-col items-center justify-center px-6 relative py-28 md:py-36">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 mt-20">
           <div className="-translate-y-56 md:-translate-y-72">
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] md:w-[500px] h-[400px] md:h-[500px] bg-gradient-radial to-transparent rounded-full blur-2xl" />
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] md:w-[500px] h-[400px] md:h-[500px] bg-gradient-radial to-transparent rounded-full blur-2xl " />
             <div className="relative">
               <div
                 className="relative overflow-hidden"
